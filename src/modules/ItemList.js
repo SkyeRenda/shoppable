@@ -1,11 +1,11 @@
 
 import Item from './Item'
 
-export default function ItemList({items}){
+export default function ItemList({items, toggleBought}){
 
   return (
       items.map(item => {
-        return <Item key = {item.id} checked={item.checked} item = {item}/>
+        return <Item key = {item.id} checked={item.checked} item={item} toggleBought={toggleBought}/>
       })
     )
   }
