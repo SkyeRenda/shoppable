@@ -1,11 +1,15 @@
 import React from 'react'
 
-export default function Item({item}) {
+export default function Item({item, toggleBought}) {
+
+   function handleBoughtClick(){ 
+      toggleBought(item.id)
+   }
 
     return (
     <div>
        <label>
-       <input type='checkbox' checked={item.checked}/>
+       <input type='checkbox' checked={item.bought} onChange={handleBoughtClick}/>
        {item.name}
        </label>
        
