@@ -1,19 +1,27 @@
+import React from "react";
+import { ItemModel } from "../models/itemModel";
+import Item from "./Item";
 
-import React from 'react';
-import Item, { ItemProps } from './Item'
+interface ItemListProps {
+  items: ItemModel[];
+  toggleBought: (id: string) => void;
+}
 
-export interface ItemListProps{
-  items: Array<ItemProps>;
-};
-
-const ItemList : React.FC<ItemListProps> = (items, toggleBought) => {
-  const list = items.items;
-
+const ItemList: React.FC<ItemListProps> = ({
+  items,
+  toggleBought,
+}: ItemListProps) => {
   return (
-      list.map(item => {
-        return <Item key = {item.id} checked={item.checked} item={item} toggleBought={toggleBought}/>
-      })
-    );
+    <>
+      {items.map((item) => (
+        <Item
+          key={item.id}
+          item={item}
+          toggleBought={toggleBought}
+        ></Item>
+      ))}
+    </>
+  );
 };
 
 export default ItemList;
