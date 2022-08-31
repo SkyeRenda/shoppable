@@ -1,5 +1,6 @@
 import React from "react";
 import { ItemModel } from "../models/itemModel";
+import Checkbox from "@mui/material/Checkbox";
 
 export interface ItemProps {
   item: ItemModel;
@@ -14,8 +15,7 @@ const Item: React.FC<ItemProps> = ({ item, toggleBought }: ItemProps) => {
   return (
     <div>
       <label>
-        <input
-          type="checkbox"
+        <Checkbox
           checked={item.bought}
           onChange={handleBoughtClick}
         />
