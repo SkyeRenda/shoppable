@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import React from "react";
 import ItemList from "./modules/ItemList";
+import Button from "@mui/material/Button";
 
 function App() {
   const defaultItems: ItemModel[] = [
@@ -25,13 +26,20 @@ function App() {
   ];
   const [items, setItems] = useState(defaultItems);
   const itemNameRef = useRef<HTMLInputElement>(null);
+  const undoList: Array<ItemModel[]> = [];
 
   function handleAddItem() {
     const name =
       itemNameRef.current?.value !== undefined
         ? itemNameRef.current?.value
         : " ";
-    setItems([...items, { id: uuidv4(), name: name, bought: false }]);
+    if (name === "") {
+      return;
+    }
+    const newItemList = [...items, { id: uuidv4(), name: name, bought: false }];
+    undoList.push([...items]);
+    setItems(newItemList);
+
     if (itemNameRef.current?.value) {
       itemNameRef.current.value = "";
     }
@@ -40,6 +48,7 @@ function App() {
   function toggleBought(id: string) {
     const newItems = [...items];
     const item = newItems.find((item) => item.id === id);
+    undoList.push([...items]);
     if (item !== undefined) {
       item.bought = !item.bought;
     }
@@ -48,6 +57,7 @@ function App() {
 
   function handleClearBought() {
     const newItems = items.filter((items) => !items.bought);
+    undoList.push([...items]);
     setItems(newItems);
   }
 
@@ -56,12 +66,23 @@ function App() {
       <h1>HELLO LEYLA</h1>
 
       <input ref={itemNameRef}></input>
-      <button onClick={handleAddItem}>Add Item</button>
+      <Button
+        variant="contained"
+        onClick={handleAddItem}
+      >
+        Add Item
+      </Button>
       <ItemList
         items={items}
         toggleBought={toggleBought}
       ></ItemList>
-      <button onClick={handleClearBought}> Clear Bought Items</button>
+      <Button
+        variant="contained"
+        onClick={handleClearBought}
+      >
+        {" "}
+        Clear Bought Items
+      </Button>
     </div>
   );
 }
