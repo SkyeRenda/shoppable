@@ -26,7 +26,6 @@ function App() {
   ];
   const [items, setItems] = useState(defaultItems);
   const itemNameRef = useRef<HTMLInputElement>(null);
-  const undoList: Array<ItemModel[]> = [];
 
   function handleAddItem() {
     const name =
@@ -37,7 +36,6 @@ function App() {
       return;
     }
     const newItemList = [...items, { id: uuidv4(), name: name, bought: false }];
-    undoList.push([...items]);
     setItems(newItemList);
 
     if (itemNameRef.current?.value) {
@@ -48,7 +46,6 @@ function App() {
   function toggleBought(id: string) {
     const newItems = [...items];
     const item = newItems.find((item) => item.id === id);
-    undoList.push([...items]);
     if (item !== undefined) {
       item.bought = !item.bought;
     }
@@ -57,7 +54,17 @@ function App() {
 
   function handleClearBought() {
     const newItems = items.filter((items) => !items.bought);
-    undoList.push([...items]);
+    setItems(newItems);
+  }
+
+  function removeItem(id: string) {
+    const newItems = [...items];
+    const index = newItems.findIndex((item) => {
+      return item.id === id;
+    });
+
+    newItems.splice(index, 1);
+    console.log(newItems);
     setItems(newItems);
   }
 
@@ -72,15 +79,20 @@ function App() {
       >
         Add Item
       </Button>
-      <ItemList
-        items={items}
-        toggleBought={toggleBought}
-      ></ItemList>
+      {items.length > 0 ? (
+        <ItemList
+          items={items}
+          toggleBought={toggleBought}
+          removeItem={removeItem}
+        ></ItemList>
+      ) : (
+        <p>Please add items to the list.</p>
+      )}
+
       <Button
         variant="contained"
         onClick={handleClearBought}
       >
-        {" "}
         Clear Bought Items
       </Button>
     </div>
