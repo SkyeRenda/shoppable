@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import React from "react";
 import ItemList from "./modules/ItemList";
+import Button from "@mui/material/Button";
 
 function App() {
   const defaultItems: ItemModel[] = [
@@ -31,6 +32,9 @@ function App() {
       itemNameRef.current?.value !== undefined
         ? itemNameRef.current?.value
         : " ";
+    if (name === "") {
+      return;
+    }
     setItems([...items, { id: uuidv4(), name: name, bought: false }]);
     if (itemNameRef.current?.value) {
       itemNameRef.current.value = "";
@@ -51,17 +55,37 @@ function App() {
     setItems(newItems);
   }
 
+  function showListLength() {
+    console.log(items.length);
+  }
+
   return (
     <div className="App">
-      <h1>HELLO LEYLA</h1>
+      <h1>Welcome to Shoppable!</h1>
 
       <input ref={itemNameRef}></input>
-      <button onClick={handleAddItem}>Add Item</button>
-      <ItemList
-        items={items}
-        toggleBought={toggleBought}
-      ></ItemList>
+      <Button
+        variant="contained"
+        className="Add-Item"
+        onClick={handleAddItem}
+      >
+        Add Item
+      </Button>
+      {items.length > 1 ? (
+        <div className="List">
+          <ItemList
+            items={items}
+            toggleBought={toggleBought}
+          ></ItemList>
+        </div>
+      ) : (
+        <div>
+          <p>List is empty!</p>
+          <p>Please add some items</p>
+        </div>
+      )}
       <button onClick={handleClearBought}> Clear Bought Items</button>
+      <button onClick={showListLength}>Show length</button>
     </div>
   );
 }
