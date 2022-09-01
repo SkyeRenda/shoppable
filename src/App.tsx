@@ -35,7 +35,9 @@ function App() {
     if (name === "") {
       return;
     }
-    setItems([...items, { id: uuidv4(), name: name, bought: false }]);
+    const newItemList = [...items, { id: uuidv4(), name: name, bought: false }];
+    setItems(newItemList);
+
     if (itemNameRef.current?.value) {
       itemNameRef.current.value = "";
     }
@@ -55,8 +57,15 @@ function App() {
     setItems(newItems);
   }
 
-  function showListLength() {
-    console.log(items.length);
+  function removeItem(id: string) {
+    const newItems = [...items];
+    const index = newItems.findIndex((item) => {
+      return item.id === id;
+    });
+
+    newItems.splice(index, 1);
+    console.log(newItems);
+    setItems(newItems);
   }
 
   return (
@@ -66,26 +75,26 @@ function App() {
       <input ref={itemNameRef}></input>
       <Button
         variant="contained"
-        className="Add-Item"
         onClick={handleAddItem}
       >
         Add Item
       </Button>
-      {items.length > 1 ? (
-        <div className="List">
-          <ItemList
-            items={items}
-            toggleBought={toggleBought}
-          ></ItemList>
-        </div>
+      {items.length > 0 ? (
+        <ItemList
+          items={items}
+          toggleBought={toggleBought}
+          removeItem={removeItem}
+        ></ItemList>
       ) : (
-        <div>
-          <p>List is empty!</p>
-          <p>Please add some items</p>
-        </div>
+        <p>Please add items to the list.</p>
       )}
-      <button onClick={handleClearBought}> Clear Bought Items</button>
-      <button onClick={showListLength}>Show length</button>
+
+      <Button
+        variant="contained"
+        onClick={handleClearBought}
+      >
+        Clear Bought Items
+      </Button>
     </div>
   );
 }
