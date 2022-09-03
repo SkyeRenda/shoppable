@@ -26,6 +26,7 @@ function App() {
   ];
   const [items, setItems] = useState(defaultItems);
   const itemNameRef = useRef<HTMLInputElement>(null);
+  const user: string = "Greg!";
 
   function handleAddItem() {
     const name =
@@ -70,7 +71,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>HELLO LEYLA</h1>
+      <h1>Welcome {user}</h1>
 
       <input ref={itemNameRef}></input>
       <Button
