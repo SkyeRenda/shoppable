@@ -1,6 +1,7 @@
 import React from "react";
 import { ItemModel } from "../models/itemModel";
 import Item from "./Item";
+import "../styling/itemList.css";
 
 interface ItemListProps {
   items: ItemModel[];
