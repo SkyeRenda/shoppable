@@ -1,13 +1,14 @@
 import "./App.css";
-import { ItemModel } from "./models/itemModel";
+import { ShoppingItemModel } from "./models/itemModel";
 import { useState, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import React from "react";
-import ItemList from "./modules/ItemList";
+import ShoppingItemArray from "./components/ShoppingItemArray";
 import Button from "@mui/material/Button";
+import AddNewItemForm from "./components/AddNewItemForm";
 
 function App() {
-  const defaultItems: ItemModel[] = [
+  const defaultShoppingItemArray: ShoppingItemModel[] = [
     {
       id: uuidv4(),
       name: "milk",
@@ -24,75 +25,77 @@ function App() {
       bought: false,
     },
   ];
-  const [items, setItems] = useState(defaultItems);
-  const itemNameRef = useRef<HTMLInputElement>(null);
-  const user: string = "Greg!";
+  const [shoppingItemArray, setShoppingItemArray] = useState(
+    defaultShoppingItemArray
+  );
+  const shoppingItemNameRef = useRef<HTMLInputElement>(null);
+  const userName: string = "Greg!";
 
-  function handleAddItem() {
+  function handleAddShoppingItem() {
     const name =
-      itemNameRef.current?.value !== undefined
-        ? itemNameRef.current?.value
+      shoppingItemNameRef.current?.value !== undefined
+        ? shoppingItemNameRef.current?.value
         : " ";
     if (name === "") {
       return;
     }
-    const newItemList = [...items, { id: uuidv4(), name: name, bought: false }];
-    setItems(newItemList);
+    const newItemArray = [
+      ...shoppingItemArray,
+      { id: uuidv4(), name: name, bought: false },
+    ];
+    setShoppingItemArray(newItemArray);
 
-    if (itemNameRef.current?.value) {
-      itemNameRef.current.value = "";
+    if (shoppingItemNameRef.current?.value) {
+      shoppingItemNameRef.current.value = "";
     }
   }
 
-  function toggleBought(id: string) {
-    const newItems = [...items];
+  function toggleShoppingIsBought(id: string) {
+    const newItems = [...shoppingItemArray];
     const item = newItems.find((item) => item.id === id);
     if (item !== undefined) {
       item.bought = !item.bought;
     }
-    setItems(newItems);
+    setShoppingItemArray(newItems);
   }
 
-  function handleClearBought() {
-    const newItems = items.filter((items) => !items.bought);
-    setItems(newItems);
+  function handleClearBoughtShoppingItems() {
+    const newItems = shoppingItemArray.filter((items) => !items.bought);
+    setShoppingItemArray(newItems);
   }
 
-  function removeItem(id: string) {
-    const newItems = [...items];
-    const index = newItems.findIndex((item) => {
-      return item.id === id;
+  function removeShoppingItem(id: string) {
+    const newShoppingItemArray = [...shoppingItemArray];
+    const index = newShoppingItemArray.findIndex((shoppingItem) => {
+      return shoppingItem.id === id;
     });
 
-    newItems.splice(index, 1);
-    console.log(newItems);
-    setItems(newItems);
+    newShoppingItemArray.splice(index, 1);
+    console.log(newShoppingItemArray);
+    setShoppingItemArray(newShoppingItemArray);
   }
 
   return (
     <div className="App">
-      <h1>Welcome {user}</h1>
+      <h1>Welcome {userName}</h1>
+      <AddNewItemForm
+        handleAddShoppingItem={handleAddShoppingItem}
+        itemNameRef={shoppingItemNameRef}
+      />
 
-      <input ref={itemNameRef}></input>
-      <Button
-        variant="contained"
-        onClick={handleAddItem}
-      >
-        Add Item
-      </Button>
-      {items.length > 0 ? (
-        <ItemList
-          items={items}
-          toggleBought={toggleBought}
-          removeItem={removeItem}
-        ></ItemList>
+      {shoppingItemArray.length > 0 ? (
+        <ShoppingItemArray
+          shoppingItemArray={shoppingItemArray}
+          toggleShoppingIsBought={toggleShoppingIsBought}
+          removeShoppingItem={removeShoppingItem}
+        ></ShoppingItemArray>
       ) : (
         <p>Please add items to the list.</p>
       )}
 
       <Button
         variant="contained"
-        onClick={handleClearBought}
+        onClick={handleClearBoughtShoppingItems}
       >
         Clear Bought Items
       </Button>

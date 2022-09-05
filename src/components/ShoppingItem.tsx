@@ -1,35 +1,35 @@
 import React from "react";
-import { ItemModel } from "../models/itemModel";
+import { ShoppingItemModel } from "../models/itemModel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 
 export interface ItemProps {
-  item: ItemModel;
-  toggleBought: (id: string) => void;
-  removeItem: (id: string) => void;
+  shoppingItem: ShoppingItemModel;
+  toggleShoppingIsBought: (id: string) => void;
+  removeShoppingItem: (id: string) => void;
 }
 
-const Item: React.FC<ItemProps> = ({
-  item,
-  toggleBought,
-  removeItem,
+const ShoppingItem: React.FC<ItemProps> = ({
+  shoppingItem,
+  toggleShoppingIsBought,
+  removeShoppingItem,
 }: ItemProps) => {
   function handleBoughtClick() {
-    toggleBought(item.id);
+    toggleShoppingIsBought(shoppingItem.id);
   }
 
   function handleRemoveClick() {
-    removeItem(item.id);
+    removeShoppingItem(shoppingItem.id);
   }
 
   return (
     <div>
       <label>
         <Checkbox
-          checked={item.bought}
+          checked={shoppingItem.bought}
           onChange={handleBoughtClick}
         />
-        {item.name}
+        {shoppingItem.name}
       </label>
       <Button
         variant="text"
@@ -41,4 +41,4 @@ const Item: React.FC<ItemProps> = ({
   );
 };
 
-export default Item;
+export default ShoppingItem;
